@@ -57,6 +57,18 @@ void FreeList(LinkList &list)
     }
 }
 
+void ShowMenu()
+{
+    cout << "         *城市链表*  ";
+    cout << "*1)    插入一个城市" << endl;
+    cout << "*2)    删除一个城市" << endl;
+    cout << "*3)    更新一个城市" << endl;
+    cout << "*4)    查找一个城市"<< endl;
+    cout << "*5)    显示所有城市" << endl;
+    cout << "*6)    退出" << endl;
+
+}
+
 int main(void)
 {
     LinkList head;
