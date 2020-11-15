@@ -1,6 +1,6 @@
 #pragma  once 
 
-#define kSize 100
+const int kSize = 100;
 
 typedef struct 
 {
@@ -12,6 +12,7 @@ typedef struct
 typedef struct
 {
     int x, y;
+
 } Position;
 
 typedef struct City
