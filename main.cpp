@@ -359,6 +359,8 @@ int main(void)
             delete head;
             exit(0);
             break;
+        default:
+            cout << "please input correctly(1-7)" << endl;
 
         }
         getchar();
