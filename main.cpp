@@ -1,5 +1,6 @@
 #include <iostream>
 #include <cstring>
+#include <cmath>
 #include "header.h"
 
 using namespace std;
@@ -27,7 +28,7 @@ void InsertList(LinkList &list, const char *name, const Position position, const
 
 }
 
-Position FindByName(const LinkList &list, const char *name)
+City *FindByName(const LinkList &list, const char *name)
 {
     City *p = list->next;
 
@@ -35,16 +36,12 @@ Position FindByName(const LinkList &list, const char *name)
     {
         if(!strcmp(name, p->name))
         {
-            return p->position;
+            return p;
         }
         p = p->next;
     }
 
-    cout << "can not find " << name << endl;
-
-    Position tmp;
-    tmp.x = tmp.y = 0;
-    return tmp;
+    return nullptr;
 }
 
 void FreeList(LinkList &list)
@@ -57,23 +54,8 @@ void FreeList(LinkList &list)
     }
 }
 
-void ShowMenu()
+void InsertCity(LinkList &list)
 {
-    cout << "         *城市链表*  ";
-    cout << "*1)    插入一个城市" << endl;
-    cout << "*2)    删除一个城市" << endl;
-    cout << "*3)    更新一个城市" << endl;
-    cout << "*4)    查找一个城市"<< endl;
-    cout << "*5)    显示所有城市" << endl;
-    cout << "*6)    退出" << endl;
-
-}
-
-int main(void)
-{
-    LinkList head;
-    InitList(head);
-
     cout << "Name   Position(x,y) population(unit: w)  area(unit: km^2)  feature" << endl;
     cout << "example: 江苏 0 0  300000      2300    美食丰富" << endl;
     cout << "input: ";
@@ -82,16 +64,311 @@ int main(void)
     Information information;
 
     cin >> name >> position.x >> position.y >> information.population >> information.area >> information.feature;
-    InsertList(head, name, position, information);
+    InsertList(list, name, position, information);
 
-    char name_wanted[kSize];
-    cout << "what city you want to find?";
-    cin >> name_wanted;
-    FindByName(head, name_wanted);
+}
+
+void ShowMenu()
+{
+    cout << "         *城市链表*  " << endl;
+    cout << "*1)    插入一个城市" << endl;
+    cout << "*2)    删除一个城市" << endl;
+    cout << "*3)    更新一个城市" << endl;
+    cout << "*4)    查找一个城市" << endl;
+    cout << "*5)    显示所有城市" << endl;
+    cout << "*6)    显示与P(x,y)距离小于D的城市" << endl;
+    cout << "*7)    退出" << endl;
+
+}
+
+City *FindByPosition(const LinkList &list, const Position &position)
+{
+    City *p = list->next;
+
+    while(p != nullptr)
+    {
+        if(p->position.x == position.x && p->position.y == position.y)
+        {
+            return p;
+        }
+        p = p->next;
+    }
 
 
-    FreeList(head);
-    delete head;
+    return nullptr;
+}
+
+void FindCity(const LinkList &list)
+{
+    cout << "你希望通过(1)城市名查找或(2)位置坐标查找" << endl;
+    int choice;
+    cin >> choice;
+    if(choice == 1)
+    {
+        char name_wanted[kSize];
+        cout << "what city you want to find?";
+        cin >> name_wanted;
+        City *res = FindByName(list, name_wanted);
+        if(res == nullptr)
+        {
+            cout << "can't find " << name_wanted << endl;
+
+        }
+        else
+        {
+            cout << "position: (" << res->position.x << "," << res->position.y <<  ")" << endl;
+        }
+
+    }
+    else if(choice == 2)
+    {
+        Position position;
+        cout << "input position(eg: 23 34)";
+        cin >> position.x >> position.y;
+        City *res = FindByPosition(list, position);
+        if(res == nullptr)
+        {
+            cout << "can not find (" << position.x << "," << position.y << ")" << endl;
+
+        }
+        else
+        {
+            cout << "name: " << res->name << endl;
+        }
+    }
+    else
+    {
+        cerr << "please enter 1 or 2!" << endl;
+    }
+}
+
+City *FindPriorList(const LinkList &list, City *p)
+{
+    City *start = list;
+    while(start->next != p)
+    {
+        start = start->next;
+    }
+
+    return start;
+
+}
+
+void DeleteByName(const LinkList &list, const char *name)
+{
+    City *res = FindByName(list, name);
+    if(!res)
+    {
+        cout << "can't find it" << endl;
+        return;
+    }
+    City *prior = FindPriorList(list, res);
+    prior->next = res->next;
+    delete res;
+}
+void DeleteByPosition(const LinkList &list, const Position &position)
+{
+    City *res = FindByPosition(list, position);
+    if(!res)
+    {
+        cout << "can't find it" << endl;
+        return;
+    }
+    City *prior = FindPriorList(list, res);
+    prior->next = res->next;
+    delete res;
+}
+
+void UpdateByName(const LinkList &list, const char *name)
+{
+    City *res = FindByName(list, name);
+    if(!res)
+    {
+        cout << "can't find it" << endl;
+        return;
+    }
+    cout << "Name   Position(x,y) population(unit: w)  area(unit: km^2)  feature" << endl;
+    cout << "input: ";
+
+    cin >> res->name >> res->position.x >> res->position.y >> res->information.population >> res->information.area >> res->information.feature;
+}
+void UpdateByPosition(const LinkList &list, const Position &position)
+{
+    City *res = FindByPosition(list, position);
+    if(!res)
+    {
+        cout << "can't find it" << endl;
+        return;
+    }
+    cout << "Name   Position(x,y) population(unit: w)  area(unit: km^2)  feature" << endl;
+    cout << "input: ";
+
+    cin >> res->name >> res->position.x >> res->position.y >> res->information.population >> res->information.area >> res->information.feature;
+}
+
+void DeleteCity(const LinkList &list)
+{
+    cout << "你希望通过城市名删除(1)或位置坐标删除(2)" << endl;
+    int choice;
+    cin >> choice;
+    if(choice == 1)
+    {
+        char name_wanted[kSize];
+        cout << "what city you want to delete?";
+        cin >> name_wanted;
+        DeleteByName(list, name_wanted);
+
+    }
+    else if(choice == 2)
+    {
+        Position position;
+        cout << "input position(eg: 23 34)";
+        cin >> position.x >> position.y;
+        DeleteByPosition(list, position);
+    }
+    else
+    {
+        cerr << "please enter 1 or 2!" << endl;
+    }
+
+}
+
+bool JudgeByDistance(const Position &lhs, const Position &rhs, int distance)
+{
+    int value = sqrt((lhs.x - rhs.x) * (lhs.x - rhs.x) + (lhs.y - rhs.y) * (lhs.y - rhs.y));
+
+    return value <= distance ? true : false;
+
+}
+
+
+
+void ShowbyDistance(const LinkList &list, const Position &position, int distance)
+{
+    City *p = list->next;
+
+    while(p != nullptr)
+    {
+        if(JudgeByDistance(p->position, position, distance))
+        {
+            cout << "Name: " << p->name << endl;
+            cout << "Position: " << "(" << p->position.x << "," << p->position.y << ")" << endl;
+            cout << "Population: " << p->information.population << endl;
+            cout << "Area: " << p->information.area << endl;
+            cout << "Feature: " << p->information.feature << endl;
+
+        }
+
+        p = p->next;
+
+    }
+}
+
+void ShowbyDistanceCity(const LinkList &list)
+{
+    Position positon;
+    cout << "p(x,y): ";
+    cin >> positon.x >> positon.y;
+    cout << "D: ";
+    int distance;
+    cin >> distance;
+    ShowbyDistance(list, positon, distance);
+}
+
+void ShowAllCity(const LinkList &list)
+{
+    City *p = list->next;
+
+    while(p != nullptr)
+    {
+        cout << "Name: " << p->name << endl;
+        cout << "Position: " << "(" << p->position.x << "," << p->position.y << ")" << endl;
+        cout << "Population: " << p->information.population << endl;
+        cout << "Area: " << p->information.area << endl;
+        cout << "Feature: " << p->information.feature << endl;
+
+        p = p->next;
+
+    }
+
+}
+
+void UpdateCity(const LinkList &list)
+{
+    cout << "你希望通过城市名更改(1)或位置坐标更改(2)" << endl;
+    int choice;
+    cin >> choice;
+    if(choice == 1)
+    {
+        char name_wanted[kSize];
+        cout << "what city you want to update?";
+        cin >> name_wanted;
+        UpdateByName(list, name_wanted);
+
+    }
+    else if(choice == 2)
+    {
+        Position position;
+        cout << "input position(eg: 23 34)";
+        cin >> position.x >> position.y;
+        UpdateByPosition(list, position);
+    }
+    else
+    {
+        cerr << "please enter 1 or 2!" << endl;
+    }
+
+}
+
+
+
+int main(void)
+{
+    LinkList head;
+    InitList(head);
+
+    int choice;
+    while(1)
+    {
+        system("clear");
+        ShowMenu();
+        cout << "your choice: ";
+        cin >> choice;
+        switch(choice)
+        {
+        case 1:
+            InsertCity(head);
+            break;
+        case 2:
+            DeleteCity(head);
+            break;
+        case 3:
+            UpdateCity(head);
+            break;
+        case 4:
+            FindCity(head);
+            break;
+        case 5:
+            ShowAllCity(head);
+            break;
+        case 6:
+            ShowbyDistanceCity(head);
+            break;
+        case 7:
+            FreeList(head);
+            delete head;
+            exit(0);
+            break;
+
+        }
+        getchar();
+        int tmp;
+        cout << "按任意键继续";
+        tmp = getchar();
+
+    }
+
+
 
     return 0;
 }
