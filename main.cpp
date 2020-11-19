@@ -23,13 +23,13 @@ int main(void)
             InsertCity(head);
             break;
         case 2:
-            DeleteCity(head);
+            OperateCity(head, kDelete);
             break;
         case 3:
-            UpdateCity(head);
+            OperateCity(head, kUpdate);
             break;
         case 4:
-            FindCity(head);
+            OperateCity(head, kFind);
             break;
         case 5:
             ShowAllCity(head);

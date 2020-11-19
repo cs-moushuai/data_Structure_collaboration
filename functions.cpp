@@ -8,6 +8,11 @@ using namespace std;
 void InitList(LinkList &list)
 {
     list = new City;
+    if(!list)
+    {
+        cerr << "Out of space!" << endl;
+        exit(1);
+    }
     strcpy(list->name, "");
     list->position.x = list->position.y = 0;
     list->information.area = 0.0;
@@ -20,6 +25,11 @@ void InitList(LinkList &list)
 void InsertList(LinkList &list, const char *name, const Position position, const Information information)
 {
     City *node = new City;
+    if(!node)
+    {
+        cerr << "Out of space!" << endl;
+        exit(1);
+    }
     strcpy(node->name, name);
     node->position = position;
     node->information = information;
@@ -98,49 +108,6 @@ City *FindByPosition(const LinkList &list, const Position &position)
     return nullptr;
 }
 
-void FindCity(const LinkList &list)
-{
-    cout << "你希望通过(1)城市名查找或(2)位置坐标查找" << endl;
-    int choice;
-    cin >> choice;
-    if(choice == 1)
-    {
-        char name_wanted[kSize];
-        cout << "what city you want to find?";
-        cin >> name_wanted;
-        City *res = FindByName(list, name_wanted);
-        if(res == nullptr)
-        {
-            cout << "can't find " << name_wanted << endl;
-
-        }
-        else
-        {
-            cout << "position: (" << res->position.x << "," << res->position.y <<  ")" << endl;
-        }
-
-    }
-    else if(choice == 2)
-    {
-        Position position;
-        cout << "input position(eg: 23 34)";
-        cin >> position.x >> position.y;
-        City *res = FindByPosition(list, position);
-        if(res == nullptr)
-        {
-            cout << "can not find (" << position.x << "," << position.y << ")" << endl;
-
-        }
-        else
-        {
-            cout << "name: " << res->name << endl;
-        }
-    }
-    else
-    {
-        cerr << "please enter 1 or 2!" << endl;
-    }
-}
 
 City *FindPriorList(const LinkList &list, City *p)
 {
@@ -206,32 +173,6 @@ void UpdateByPosition(const LinkList &list, const Position &position)
     cin >> res->name >> res->position.x >> res->position.y >> res->information.population >> res->information.area >> res->information.feature;
 }
 
-void DeleteCity(const LinkList &list)
-{
-    cout << "你希望通过城市名删除(1)或位置坐标删除(2)" << endl;
-    int choice;
-    cin >> choice;
-    if(choice == 1)
-    {
-        char name_wanted[kSize];
-        cout << "what city you want to delete?";
-        cin >> name_wanted;
-        DeleteByName(list, name_wanted);
-
-    }
-    else if(choice == 2)
-    {
-        Position position;
-        cout << "input position(eg: 23 34)";
-        cin >> position.x >> position.y;
-        DeleteByPosition(list, position);
-    }
-    else
-    {
-        cerr << "please enter 1 or 2!" << endl;
-    }
-
-}
 
 bool JudgeByDistance(const Position &lhs, const Position &rhs, int distance)
 {
@@ -293,9 +234,21 @@ void ShowAllCity(const LinkList &list)
 
 }
 
-void UpdateCity(const LinkList &list)
+void OperateCity(const LinkList &list, Operate operate)
 {
-    cout << "你希望通过城市名更改(1)或位置坐标更改(2)" << endl;
+    switch(operate)
+    {
+    case kUpdate:
+        cout << "你希望通过城市名更改(1)或位置坐标更改(2)" << endl;
+
+        break;
+    case kDelete:
+        cout << "你希望通过城市名删除(1)或位置坐标删除(2)" << endl;
+        break;
+    case kFind:
+        cout << "你希望通过(1)城市名查找或(2)位置坐标查找" << endl;
+        break;
+    }
     int choice;
     cin >> choice;
     if(choice == 1)
@@ -303,7 +256,27 @@ void UpdateCity(const LinkList &list)
         char name_wanted[kSize];
         cout << "what city you want to update?";
         cin >> name_wanted;
-        UpdateByName(list, name_wanted);
+        switch(operate)
+        {
+        case kUpdate:
+            UpdateByName(list, name_wanted);
+            break;
+
+        case kDelete:
+            DeleteByName(list, name_wanted);
+
+        case kFind:
+            City *res = FindByName(list, name_wanted);
+            if(res == nullptr)
+            {
+                cout << "can't find " << name_wanted << endl;
+
+            }
+            else
+            {
+                cout << "position: (" << res->position.x << "," << res->position.y <<  ")" << endl;
+            }
+        }
 
     }
     else if(choice == 2)
@@ -311,7 +284,27 @@ void UpdateCity(const LinkList &list)
         Position position;
         cout << "input position(eg: 23 34)";
         cin >> position.x >> position.y;
-        UpdateByPosition(list, position);
+        switch(operate)
+        {
+        case kUpdate:
+            UpdateByPosition(list, position);
+            break;
+        case kDelete:
+            DeleteByPosition(list, position);
+            break;
+        case kFind:
+            City *res = FindByPosition(list, position);
+            if(res == nullptr)
+            {
+                cout << "can not find (" << position.x << "," << position.y << ")" << endl;
+
+            }
+            else
+            {
+                cout << "name: " << res->name << endl;
+            }
+            break;
+        }
     }
     else
     {
