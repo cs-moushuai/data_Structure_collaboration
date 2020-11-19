@@ -25,7 +25,7 @@ typedef struct City
 
 } City, *LinkList;
 
-enum Operate {kFind, kDelete, kUpdate};
+enum OperateTag {kFind, kDelete, kUpdate};
 
 void InitList(LinkList &list);
 void InsertList(LinkList &list, const char *name, const Position position, const Information information);
@@ -42,4 +42,4 @@ void UpdateByPosition(const LinkList &list, const Position &position);
 void ShowbyDistance(const LinkList &list, const Position &position, int distance);
 void ShowbyDistanceCity(const LinkList &list);
 void ShowAllCity(const LinkList &list);
-void OperateCity(const LinkList &list, Operate operate);
+void OperateCity(const LinkList &list, OperateTag operate);

@@ -220,13 +220,16 @@ void ShowAllCity(const LinkList &list)
 {
     City *p = list->next;
 
+    int i = 1;
     while(p != nullptr)
     {
+        cout << "No." << i++ << endl;
         cout << "Name: " << p->name << endl;
         cout << "Position: " << "(" << p->position.x << "," << p->position.y << ")" << endl;
         cout << "Population: " << p->information.population << endl;
         cout << "Area: " << p->information.area << endl;
         cout << "Feature: " << p->information.feature << endl;
+        cout << endl;
 
         p = p->next;
 
@@ -234,81 +237,86 @@ void ShowAllCity(const LinkList &list)
 
 }
 
-void OperateCity(const LinkList &list, Operate operate)
+void OperateCity(const LinkList &list, OperateTag operate)
 {
-    switch(operate)
+    while(1)
     {
-    case kUpdate:
-        cout << "你希望通过城市名更改(1)或位置坐标更改(2)" << endl;
-
-        break;
-    case kDelete:
-        cout << "你希望通过城市名删除(1)或位置坐标删除(2)" << endl;
-        break;
-    case kFind:
-        cout << "你希望通过(1)城市名查找或(2)位置坐标查找" << endl;
-        break;
-    }
-    int choice;
-    cin >> choice;
-    if(choice == 1)
-    {
-        char name_wanted[kSize];
-        cout << "what city you want to update?";
-        cin >> name_wanted;
         switch(operate)
         {
         case kUpdate:
-            UpdateByName(list, name_wanted);
+            cout << "你希望通过城市名更改(1)或位置坐标更改(2)" << endl;
+
             break;
-
         case kDelete:
-            DeleteByName(list, name_wanted);
-
+            cout << "你希望通过城市名删除(1)或位置坐标删除(2)" << endl;
+            break;
         case kFind:
-            City *res = FindByName(list, name_wanted);
-            if(res == nullptr)
-            {
-                cout << "can't find " << name_wanted << endl;
-
-            }
-            else
-            {
-                cout << "position: (" << res->position.x << "," << res->position.y <<  ")" << endl;
-            }
+            cout << "你希望通过(1)城市名查找或(2)位置坐标查找" << endl;
+            break;
         }
-
-    }
-    else if(choice == 2)
-    {
-        Position position;
-        cout << "input position(eg: 23 34)";
-        cin >> position.x >> position.y;
-        switch(operate)
+        int choice;
+        cin >> choice;
+        if(choice == 1)
         {
-        case kUpdate:
-            UpdateByPosition(list, position);
-            break;
-        case kDelete:
-            DeleteByPosition(list, position);
-            break;
-        case kFind:
-            City *res = FindByPosition(list, position);
-            if(res == nullptr)
+            char name_wanted[kSize];
+            cout << "what city you want to update?";
+            cin >> name_wanted;
+            switch(operate)
             {
-                cout << "can not find (" << position.x << "," << position.y << ")" << endl;
+            case kUpdate:
+                UpdateByName(list, name_wanted);
+                break;
 
+            case kDelete:
+                DeleteByName(list, name_wanted);
+
+            case kFind:
+                City *res = FindByName(list, name_wanted);
+                if(res == nullptr)
+                {
+                    cout << "can't find " << name_wanted << endl;
+
+                }
+                else
+                {
+                    cout << "position: (" << res->position.x << "," << res->position.y <<  ")" << endl;
+                }
             }
-            else
+            break;
+
+        }
+        else if(choice == 2)
+        {
+            Position position;
+            cout << "input position(eg: 23 34)";
+            cin >> position.x >> position.y;
+            switch(operate)
             {
-                cout << "name: " << res->name << endl;
+            case kUpdate:
+                UpdateByPosition(list, position);
+                break;
+            case kDelete:
+                DeleteByPosition(list, position);
+                break;
+            case kFind:
+                City *res = FindByPosition(list, position);
+                if(res == nullptr)
+                {
+                    cout << "can not find (" << position.x << "," << position.y << ")" << endl;
+
+                }
+                else
+                {
+                    cout << "name: " << res->name << endl;
+                }
+                break;
             }
             break;
         }
-    }
-    else
-    {
-        cerr << "please enter 1 or 2!" << endl;
+        else
+        {
+            cerr << "please enter 1 or 2!" << endl;
+        }
     }
 
 }
