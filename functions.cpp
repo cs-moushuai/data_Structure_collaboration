@@ -121,7 +121,7 @@ City *FindPriorList(const LinkList &list, City *p)
 
 }
 
-void DeleteByName(const LinkList &list, const char *name)
+void DeleteByName(LinkList &list, const char *name)
 {
     City *res = FindByName(list, name);
     if(!res)
@@ -133,7 +133,7 @@ void DeleteByName(const LinkList &list, const char *name)
     prior->next = res->next;
     delete res;
 }
-void DeleteByPosition(const LinkList &list, const Position &position)
+void DeleteByPosition(LinkList &list, const Position &position)
 {
     City *res = FindByPosition(list, position);
     if(!res)
@@ -146,7 +146,7 @@ void DeleteByPosition(const LinkList &list, const Position &position)
     delete res;
 }
 
-void UpdateByName(const LinkList &list, const char *name)
+void UpdateByName(LinkList &list, const char *name)
 {
     City *res = FindByName(list, name);
     if(!res)
@@ -159,7 +159,7 @@ void UpdateByName(const LinkList &list, const char *name)
 
     cin >> res->name >> res->position.x >> res->position.y >> res->information.population >> res->information.area >> res->information.feature;
 }
-void UpdateByPosition(const LinkList &list, const Position &position)
+void UpdateByPosition(LinkList &list, const Position &position)
 {
     City *res = FindByPosition(list, position);
     if(!res)
@@ -239,7 +239,7 @@ void ShowAllCity(const LinkList &list)
 
 }
 
-void OperateCity(const LinkList &list, OperateTag operate)
+void OperateCity(LinkList &list, OperateTag operate)
 {
     while(1)
     {
