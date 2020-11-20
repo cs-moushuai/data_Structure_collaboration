@@ -218,6 +218,8 @@ void ShowbyDistanceCity(const LinkList &list)
 
 void ShowAllCity(const LinkList &list)
 {
+    system("clear");
+    cout << "**************Show all city**************" << endl;
     City *p = list->next;
 
     int i = 1;
@@ -226,8 +228,8 @@ void ShowAllCity(const LinkList &list)
         cout << "No." << i++ << endl;
         cout << "Name: " << p->name << endl;
         cout << "Position: " << "(" << p->position.x << "," << p->position.y << ")" << endl;
-        cout << "Population: " << p->information.population << endl;
-        cout << "Area: " << p->information.area << endl;
+        cout << "Population: " << p->information.population << "w" << endl;
+        cout << "Area: " << p->information.area << "km^2" << endl;
         cout << "Feature: " << p->information.feature << endl;
         cout << endl;
 
@@ -259,7 +261,7 @@ void OperateCity(const LinkList &list, OperateTag operate)
         if(choice == 1)
         {
             char name_wanted[kSize];
-            cout << "what city you want to update?";
+            cout << "what city you want to update?  ";
             cin >> name_wanted;
             switch(operate)
             {
