@@ -13,7 +13,7 @@ int main(void)
     int choice;
     while(1)
     {
-        system("clear");
+        system("cls");
         ShowMenu();
         cout << "your choice: ";
         cin >> choice;
