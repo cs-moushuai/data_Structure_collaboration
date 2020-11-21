@@ -66,8 +66,8 @@ void FreeList(LinkList &list)
 
 void InsertCity(LinkList &list)
 {
-    cout << "Name   Position(x,y) population(unit: w)  area(unit: km^2)  feature" << endl;
-    cout << "example: 江苏 0 0  300000      2300    美食丰富" << endl;
+    cout << "Format:  Name   Position(x,y) population(unit: w)  area(unit: km^2)  feature" << endl;
+    cout << "Example: jiangsu 0 0  300000      2300    have delicious food" << endl;
     cout << "input: ";
     char name[kSize];
     Position position;
@@ -80,14 +80,14 @@ void InsertCity(LinkList &list)
 
 void ShowMenu()
 {
-    cout << "         *城市链表*  " << endl;
-    cout << "*1)    插入一个城市" << endl;
-    cout << "*2)    删除一个城市" << endl;
-    cout << "*3)    更新一个城市" << endl;
-    cout << "*4)    查找一个城市" << endl;
-    cout << "*5)    显示所有城市" << endl;
-    cout << "*6)    显示与P(x,y)距离小于D的城市" << endl;
-    cout << "*7)    退出" << endl;
+    cout << "         *the list of City*  " << endl;
+    cout << "*1)    insert a city" << endl;
+    cout << "*2)    delete a city" << endl;
+    cout << "*3)    update a city" << endl;
+    cout << "*4)    search for a city" << endl;
+    cout << "*5)    show all cities in list" << endl;
+    cout << "*6)    show cities that are less than D from P(x,y)" << endl;
+    cout << "*7)    quit" << endl;
 
 }
 
@@ -154,7 +154,7 @@ void UpdateByName(LinkList &list, const char *name)
         cout << "can't find it" << endl;
         return;
     }
-    cout << "Name   Position(x,y) population(unit: w)  area(unit: km^2)  feature" << endl;
+    cout << "Format:  Name   Position(x,y) population(unit: w)  area(unit: km^2)  feature" << endl;
     cout << "input: ";
 
     cin >> res->name >> res->position.x >> res->position.y >> res->information.population >> res->information.area >> res->information.feature;
@@ -167,7 +167,7 @@ void UpdateByPosition(LinkList &list, const Position &position)
         cout << "can't find it" << endl;
         return;
     }
-    cout << "Name   Position(x,y) population(unit: w)  area(unit: km^2)  feature" << endl;
+    cout << "Format:  Name   Position(x,y) population(unit: w)  area(unit: km^2)  feature" << endl;
     cout << "input: ";
 
     cin >> res->name >> res->position.x >> res->position.y >> res->information.population >> res->information.area >> res->information.feature;
@@ -246,14 +246,14 @@ void OperateCity(LinkList &list, OperateTag operate)
         switch(operate)
         {
         case kUpdate:
-            cout << "你希望通过城市名更改(1)或位置坐标更改(2)" << endl;
+            cout << "You want to change city (1)by the city name or (2) by the location coordinates" << endl;
 
             break;
         case kDelete:
-            cout << "你希望通过城市名删除(1)或位置坐标删除(2)" << endl;
+            cout << "You want to delete city (1)by the city name or (2) by the location coordinates" << endl;
             break;
         case kFind:
-            cout << "你希望通过(1)城市名查找或(2)位置坐标查找" << endl;
+            cout << "You want to find city (1)by the city name or (2) by the location coordinates" << endl;
             break;
         }
         int choice;
@@ -261,7 +261,18 @@ void OperateCity(LinkList &list, OperateTag operate)
         if(choice == 1)
         {
             char name_wanted[kSize];
-            cout << "what city you want to update?  ";
+            switch(operate)
+            {
+            case kUpdate:
+                cout << "Which city do you want to update?  " << endl;
+                break;
+            case kDelete:
+                cout << "Which city do you want to delete?  " << endl;
+                break;
+            case kFind:
+                cout << "Which city do you want to find?  " << endl;
+                break;
+            }
             cin >> name_wanted;
             switch(operate)
             {
