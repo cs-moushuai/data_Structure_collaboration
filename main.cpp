@@ -8,11 +8,13 @@ using namespace std;
 int main(void)
 {
     LinkList head;
+    //初始化链表
     InitList(head);
 
     int choice;
     while(1)
     {
+        //清屏
         system("clear");
         ShowMenu();
         cout << "your choice: ";
@@ -46,10 +48,10 @@ int main(void)
             cout << "please input correctly(1-7)" << endl;
 
         }
+        //清空键盘缓冲区
         getchar();
-        int tmp;
         cout << "按任意键继续";
-        tmp = getchar();
+        getchar();
 
     }
 
