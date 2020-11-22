@@ -1,6 +1,8 @@
+//只能被包含一次
 #pragma  once
 
-const int kSize = 100;
+//最大长度, constexpr是const的强化版,可以在编译期得到结果
+constexpr int kSize = 100;
 
 typedef struct
 {
@@ -15,6 +17,7 @@ typedef struct
 
 } Position;
 
+//类内包含两个用户自定义成员,及一个char类型,和一个指针类型
 typedef struct City
 {
     char name[kSize];
@@ -25,6 +28,7 @@ typedef struct City
 
 } City, *LinkList;
 
+//枚举类型, 接受一个参数在kFind, kDelete, kUpdate之间
 enum OperateTag {kFind, kDelete, kUpdate};
 
 void InitList(LinkList &list);
