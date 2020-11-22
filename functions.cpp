@@ -218,7 +218,7 @@ void ShowbyDistanceCity(const LinkList &list)
 
 void ShowAllCity(const LinkList &list)
 {
-    system("clear");
+    system("cls");
     cout << "**************Show all city**************" << endl;
     City *p = list->next;
 
