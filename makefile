@@ -9,4 +9,4 @@ main.o: main.cpp
 functions.o:functions.cpp
 	$(CC) $(CFLAGS) -c functions.cpp -o functions.o
 clean:
-	rm -rf *.o
+	rm -rf *.o main
