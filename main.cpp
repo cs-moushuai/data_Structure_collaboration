@@ -50,7 +50,7 @@ int main(void)
         }
         //清空键盘缓冲区
         getchar();
-        cout << "按任意键继续";
+        cout << "please input any key to continue";
         getchar();
 
     }
